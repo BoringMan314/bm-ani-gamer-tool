@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Options</title>
+		<link rel="stylesheet" href="popup.css" />
+	</head>
+	<body>
+		<header class="header">
+			<img class="header-icon" src="icons/icon.png" width="40" height="40" alt="" />
+			<div class="header-text">
+				<h1 class="header-title" data-i18n="extName"></h1>
+				<p class="header-sub" data-i18n="popupSubtitle"></p>
+			</div>
+		</header>
+
+		<main class="cards">
+			<h2 class="group-title" data-i18n="groupPlayer"></h2>
+
+			<label class="card" for="speed3x">
+				<div class="card-copy">
+					<span class="card-title" data-i18n="opt3xTitle"></span>
+					<span class="card-desc" data-i18n="opt3xDesc"></span>
+				</div>
+				<span class="switch">
+					<input id="speed3x" type="checkbox" role="switch" />
+					<span class="switch-track" aria-hidden="true"></span>
+				</span>
+			</label>
+
+			<label class="card" for="timeIndicator">
+				<div class="card-copy">
+					<span class="card-title" data-i18n="optMarkerTitle"></span>
+					<span class="card-desc" data-i18n="optMarkerDesc"></span>
+				</div>
+				<span class="switch">
+					<input id="timeIndicator" type="checkbox" role="switch" />
+					<span class="switch-track" aria-hidden="true"></span>
+				</span>
+			</label>
+
+			<h2 class="group-title group-layout" data-i18n="groupLayout"></h2>
+
+			<label class="card" for="coverImage">
+				<div class="card-copy">
+					<span class="card-title" data-i18n="optCoverTitle"></span>
+					<span class="card-desc" data-i18n="optCoverDesc"></span>
+				</div>
+				<span class="switch">
+					<input id="coverImage" type="checkbox" role="switch" />
+					<span class="switch-track" aria-hidden="true"></span>
+				</span>
+			</label>
+
+			<label class="card" for="theaterTopbar">
+				<div class="card-copy">
+					<span class="card-title" data-i18n="optTheaterTitle"></span>
+					<span class="card-desc" data-i18n="optTheaterDesc"></span>
+				</div>
+				<span class="switch">
+					<input id="theaterTopbar" type="checkbox" role="switch" />
+					<span class="switch-track" aria-hidden="true"></span>
+				</span>
+			</label>
+
+			<label class="card" for="hideAdblockPrompt">
+				<div class="card-copy">
+					<span class="card-title" data-i18n="optAdblockTitle"></span>
+					<span class="card-desc" data-i18n="optAdblockDesc"></span>
+				</div>
+				<span class="switch">
+					<input id="hideAdblockPrompt" type="checkbox" role="switch" />
+					<span class="switch-track" aria-hidden="true"></span>
+				</span>
+			</label>
+		</main>
+
+		<footer class="footer">
+			<button id="openShortcuts" class="footer-link" type="button" data-i18n="popupShortcutLink"></button>
+		</footer>
+
+		<script src="src/defaults.js"></script>
+		<script src="popup.js"></script>
+	</body>
+</html>

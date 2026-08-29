@@ -1,0 +1,70 @@
+{
+  "extName": {
+    "message": "[B.M] 动画疯 工具箱",
+    "description": "扩展功能名称（简体中文）"
+  },
+  "extDescription": {
+    "message": "动画疯（ani.gamer.com.tw）工具箱：3X 倍速、+90 秒进度标记、封面图修正、剧院模式顶部栏修正、隐藏挡广告提示。",
+    "description": "扩展功能简介（简体中文）"
+  },
+  "cmdSkip90Description": {
+    "message": "快进 90 秒",
+    "description": "快捷键指令说明（简体中文）"
+  },
+  "popupSubtitle": {
+    "message": "点击开关即可启用或关闭各项功能",
+    "description": "弹出窗口副标题"
+  },
+  "groupPlayer": {
+    "message": "播放控制",
+    "description": "弹出窗口分组标题：播放控制"
+  },
+  "groupLayout": {
+    "message": "版面修正",
+    "description": "弹出窗口分组标题：版面修正"
+  },
+  "opt3xTitle": {
+    "message": "3X 倍速选项",
+    "description": "开关：3X 倍速"
+  },
+  "opt3xDesc": {
+    "message": "在播放器倍速菜单最上方加入 3x",
+    "description": "开关说明：3X 倍速"
+  },
+  "optMarkerTitle": {
+    "message": "+90 秒进度标记",
+    "description": "开关：+90 秒进度标记"
+  },
+  "optMarkerDesc": {
+    "message": "进度条显示“当前时间 + 90 秒”黄色标记，按 S 可快进 90 秒",
+    "description": "开关说明：+90 秒进度标记"
+  },
+  "optCoverTitle": {
+    "message": "封面图修正",
+    "description": "开关：封面图修正"
+  },
+  "optCoverDesc": {
+    "message": "开播前以节目封面取代纯黑画面",
+    "description": "开关说明：封面图修正"
+  },
+  "optTheaterTitle": {
+    "message": "剧院模式顶部修正",
+    "description": "开关：剧院顶部栏"
+  },
+  "optTheaterDesc": {
+    "message": "暂停、停止或播毕后，让顶部导航栏可再次显示",
+    "description": "开关说明：剧院顶部栏"
+  },
+  "optAdblockTitle": {
+    "message": "隐藏挡广告提示",
+    "description": "开关：挡广告提示"
+  },
+  "optAdblockDesc": {
+    "message": "自动关闭或隐藏网站的挡广告相关提示",
+    "description": "开关说明：挡广告提示"
+  },
+  "popupShortcutLink": {
+    "message": "设置快进快捷键",
+    "description": "弹出窗口底部按钮：打开浏览器快捷键设置页"
+  }
+}

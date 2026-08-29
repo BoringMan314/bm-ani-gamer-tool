@@ -1,0 +1,70 @@
+{
+  "extName": {
+    "message": "[B.M] Bahamut Anime Crazy — toolbox",
+    "description": "Extension name (English)"
+  },
+  "extDescription": {
+    "message": "Toolbox for Bahamut Anime Crazy (ani.gamer.com.tw): 3× speed, +90s marker, cover fix, theater top bar fix, hide ad-block notices.",
+    "description": "Extension description (English)"
+  },
+  "cmdSkip90Description": {
+    "message": "Skip forward 90 seconds",
+    "description": "Command description (English)"
+  },
+  "popupSubtitle": {
+    "message": "Toggle each feature on or off",
+    "description": "Popup subtitle"
+  },
+  "groupPlayer": {
+    "message": "Playback",
+    "description": "Popup group heading: playback"
+  },
+  "groupLayout": {
+    "message": "Layout fixes",
+    "description": "Popup group heading: layout"
+  },
+  "opt3xTitle": {
+    "message": "3× speed option",
+    "description": "Toggle: 3× speed"
+  },
+  "opt3xDesc": {
+    "message": "Add 3x to the top of the playback speed menu",
+    "description": "Toggle help: 3× speed"
+  },
+  "optMarkerTitle": {
+    "message": "+90s progress marker",
+    "description": "Toggle: +90s marker"
+  },
+  "optMarkerDesc": {
+    "message": "Show a yellow “current time + 90s” marker; press S to skip 90 seconds",
+    "description": "Toggle help: +90s marker"
+  },
+  "optCoverTitle": {
+    "message": "Cover image fix",
+    "description": "Toggle: cover image"
+  },
+  "optCoverDesc": {
+    "message": "Replace the all-black pre-play screen with the cover image",
+    "description": "Toggle help: cover image"
+  },
+  "optTheaterTitle": {
+    "message": "Theater mode top bar fix",
+    "description": "Toggle: theater top bar"
+  },
+  "optTheaterDesc": {
+    "message": "Show the top bar again after pause, stop, or end of playback",
+    "description": "Toggle help: theater top bar"
+  },
+  "optAdblockTitle": {
+    "message": "Hide ad-block notices",
+    "description": "Toggle: ad-block notices"
+  },
+  "optAdblockDesc": {
+    "message": "Auto-close or hide the site’s ad-block related prompts",
+    "description": "Toggle help: ad-block notices"
+  },
+  "popupShortcutLink": {
+    "message": "Configure skip shortcut",
+    "description": "Popup footer button: open the browser shortcut settings page"
+  }
+}

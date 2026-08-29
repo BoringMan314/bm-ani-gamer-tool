@@ -1,0 +1,40 @@
+html.bm-tool-theater .top_sky.fullwindow-unlock.fullwindow.bm-tool-theater-reveal-top {
+  transform: translateY(0) !important;
+  height: 100px !important;
+}
+
+@media screen and (max-width: 1000px) {
+  html.bm-tool-theater .top_sky.fullwindow-unlock.fullwindow.bm-tool-theater-reveal-top {
+    height: 75px !important;
+  }
+}
+
+html.bm-tool-theater .video-js.vjs-paused .vjs-title-bar,
+html.bm-tool-theater .video-js.vjs-ended .vjs-title-bar {
+  opacity: 1 !important;
+}
+
+html.bm-tool-hide-adblock .afs_ads {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  left: -9999px !important;
+  top: 0 !important;
+}
+
+html.bm-tool-hide-adblock .bm-tool-adblock-hidden {
+  display: none !important;
+}
+
+html.bm-tool-hide-adblock dialog.bm-tool-adblock-hidden::backdrop {
+  display: none !important;
+}
+
+html.bm-tool-hide-adblock div:has(> a.alert-close):has(p) {
+  display: none !important;
+}

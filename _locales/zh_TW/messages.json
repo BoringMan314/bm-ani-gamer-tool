@@ -1,0 +1,70 @@
+{
+  "extName": {
+    "message": "[B.M] 動畫瘋 工具箱",
+    "description": "擴充功能名稱（繁體中文）"
+  },
+  "extDescription": {
+    "message": "動畫瘋（ani.gamer.com.tw）工具箱：3X 倍速、+90 秒進度標記、封面圖修正、劇院模式頂部列修正、隱藏擋廣告提示。",
+    "description": "擴充功能簡介（繁體中文）"
+  },
+  "cmdSkip90Description": {
+    "message": "快轉 90 秒",
+    "description": "快捷鍵指令說明（繁體中文）"
+  },
+  "popupSubtitle": {
+    "message": "點擊開關即可啟用或關閉各項功能",
+    "description": "彈出視窗副標"
+  },
+  "groupPlayer": {
+    "message": "播放控制",
+    "description": "彈出視窗分組標題：播放控制"
+  },
+  "groupLayout": {
+    "message": "版面修正",
+    "description": "彈出視窗分組標題：版面修正"
+  },
+  "opt3xTitle": {
+    "message": "3X 倍速選項",
+    "description": "開關：3X 倍速"
+  },
+  "opt3xDesc": {
+    "message": "在播放器倍速選單最上方加入 3x",
+    "description": "開關說明：3X 倍速"
+  },
+  "optMarkerTitle": {
+    "message": "+90 秒進度標記",
+    "description": "開關：+90 秒進度標記"
+  },
+  "optMarkerDesc": {
+    "message": "進度條顯示「目前時間 + 90 秒」黃色標記，按 S 可快轉 90 秒",
+    "description": "開關說明：+90 秒進度標記"
+  },
+  "optCoverTitle": {
+    "message": "封面圖修正",
+    "description": "開關：封面圖修正"
+  },
+  "optCoverDesc": {
+    "message": "開播前以節目封面取代純黑畫面",
+    "description": "開關說明：封面圖修正"
+  },
+  "optTheaterTitle": {
+    "message": "劇院模式頂部修正",
+    "description": "開關：劇院頂部列"
+  },
+  "optTheaterDesc": {
+    "message": "暫停、停止或播畢後，讓頂部導覽列可再次顯示",
+    "description": "開關說明：劇院頂部列"
+  },
+  "optAdblockTitle": {
+    "message": "隱藏擋廣告提示",
+    "description": "開關：擋廣告提示"
+  },
+  "optAdblockDesc": {
+    "message": "自動關閉或隱藏網站的擋廣告相關提示",
+    "description": "開關說明：擋廣告提示"
+  },
+  "popupShortcutLink": {
+    "message": "設定快轉快捷鍵",
+    "description": "彈出視窗底部按鈕：開啟瀏覽器快捷鍵設定頁"
+  }
+}

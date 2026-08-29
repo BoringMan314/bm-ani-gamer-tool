@@ -1,0 +1,70 @@
+{
+  "extName": {
+    "message": "[B.M] アニメ瘋 ツールボックス",
+    "description": "拡張機能名（日本語）"
+  },
+  "extDescription": {
+    "message": "アニメ瘋（ani.gamer.com.tw）向けの統合ツール：3倍速、+90秒マーカー、カバー画像修正、シアターモード上部バー修正、広告ブロック警告の非表示。",
+    "description": "拡張機能の説明（日本語）"
+  },
+  "cmdSkip90Description": {
+    "message": "90秒早送り",
+    "description": "コマンド説明（日本語）"
+  },
+  "popupSubtitle": {
+    "message": "スイッチで各機能をオン／オフ",
+    "description": "ポップアップのサブタイトル"
+  },
+  "groupPlayer": {
+    "message": "再生コントロール",
+    "description": "ポップアップのグループ見出し：再生"
+  },
+  "groupLayout": {
+    "message": "レイアウト修正",
+    "description": "ポップアップのグループ見出し：レイアウト"
+  },
+  "opt3xTitle": {
+    "message": "3倍速オプション",
+    "description": "トグル：3倍速"
+  },
+  "opt3xDesc": {
+    "message": "再生速度メニューの先頭に 3x を追加",
+    "description": "トグル説明：3倍速"
+  },
+  "optMarkerTitle": {
+    "message": "+90秒 マーカー",
+    "description": "トグル：+90秒マーカー"
+  },
+  "optMarkerDesc": {
+    "message": "進捗バーに「現在時刻 + 90秒」の黄色マーカーを表示。S キーで 90 秒早送り",
+    "description": "トグル説明：+90秒マーカー"
+  },
+  "optCoverTitle": {
+    "message": "カバー画像修正",
+    "description": "トグル：カバー画像"
+  },
+  "optCoverDesc": {
+    "message": "再生前の真っ黒な画面をカバー画像に置き換え",
+    "description": "トグル説明：カバー画像"
+  },
+  "optTheaterTitle": {
+    "message": "シアターモード上部バー修正",
+    "description": "トグル：シアター上部バー"
+  },
+  "optTheaterDesc": {
+    "message": "一時停止・停止・再生終了後に上部ナビを再表示",
+    "description": "トグル説明：シアター上部バー"
+  },
+  "optAdblockTitle": {
+    "message": "広告ブロック警告を非表示",
+    "description": "トグル：広告ブロック警告"
+  },
+  "optAdblockDesc": {
+    "message": "サイトの広告ブロック関連の表示を自動で閉じる／隠す",
+    "description": "トグル説明：広告ブロック警告"
+  },
+  "popupShortcutLink": {
+    "message": "早送りショートカットを設定",
+    "description": "ポップアップ下部のボタン：ブラウザのショートカット設定を開く"
+  }
+}
