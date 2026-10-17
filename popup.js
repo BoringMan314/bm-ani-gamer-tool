@@ -30,9 +30,26 @@
 		});
 	}
 
+	async function updateSkipDescription() {
+		const desc = document.getElementById('timeIndicatorDesc');
+		if (!desc) return;
+		try {
+			const state = await chrome.runtime.sendMessage({ type: 'getSkipCommandState' });
+			const key = state?.commandShortcutCustomized
+				? 'optMarkerDescCustom'
+				: 'optMarkerDescDefault';
+			const shortcut = state?.commandShortcutCustomized
+				? state.shortcut
+				: state?.defaultShortcut || state?.shortcut || '';
+			const message = chrome.i18n.getMessage(key, shortcut);
+			if (message) desc.textContent = message;
+		} catch (_) {}
+	}
+
 	async function init() {
 		applyI18n();
 		bindShortcutsLink();
+		updateSkipDescription();
 
 		const settings = await loadSettings();
 		for (const key of Object.keys(DEFAULTS)) {

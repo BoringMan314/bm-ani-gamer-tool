@@ -39,6 +39,22 @@
     "message": "Show a yellow “current time + 90s” marker; press S to skip 90 seconds",
     "description": "Toggle help: +90s marker"
   },
+  "optMarkerDescDefault": {
+    "message": "Show a yellow “current time + 90s” marker; press S or $1 to skip 90 seconds",
+    "description": "Toggle help: +90s marker with the default shortcut"
+  },
+  "optMarkerDescCustom": {
+    "message": "Show a yellow “current time + 90s” marker; press $1 to skip 90 seconds (S is disabled)",
+    "description": "Toggle help: +90s marker with a custom shortcut"
+  },
+  "optCommentTimecodeTitle": {
+    "message": "Play from comment timestamps",
+    "description": "Toggle: play from comment timestamps"
+  },
+  "optCommentTimecodeDesc": {
+    "message": "Jump to the player and start playback at the selected comment timestamp",
+    "description": "Toggle help: play from comment timestamps"
+  },
   "optCoverTitle": {
     "message": "Cover image fix",
     "description": "Toggle: cover image"

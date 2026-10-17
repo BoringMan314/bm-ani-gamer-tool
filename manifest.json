@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "__MSG_extDescription__",
   "default_locale": "zh_TW",
   "homepage_url": "https://github.com/BoringMan314/bm-ani-gamer-tool",
@@ -32,6 +32,7 @@
         "src/feature-speed-3x.js",
         "src/feature-cover-image.js",
         "src/feature-time-indicator.js",
+        "src/feature-comment-timecode.js",
         "src/feature-theater-topbar.js",
         "src/feature-adblock-prompt.js"
       ],

@@ -20,9 +20,9 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 			const shortcut = skip?.shortcut || '';
 			const commandShortcutCustomized =
 				shortcut.length > 0 && normalizeShortcut(shortcut) !== normalizeShortcut(defaultShortcut);
-			sendResponse({ commandShortcutCustomized });
+			sendResponse({ commandShortcutCustomized, shortcut, defaultShortcut });
 		} catch (_) {
-			sendResponse({ commandShortcutCustomized: false });
+			sendResponse({ commandShortcutCustomized: false, shortcut: '', defaultShortcut: '' });
 		}
 	})();
 	return true;

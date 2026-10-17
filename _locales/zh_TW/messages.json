@@ -39,6 +39,22 @@
     "message": "進度條顯示「目前時間 + 90 秒」黃色標記，按 S 可快轉 90 秒",
     "description": "開關說明：+90 秒進度標記"
   },
+  "optMarkerDescDefault": {
+    "message": "進度條顯示「目前時間 + 90 秒」黃色標記；按 S 或 $1 可快轉 90 秒",
+    "description": "開關說明：+90 秒進度標記，使用預設快捷鍵"
+  },
+  "optMarkerDescCustom": {
+    "message": "進度條顯示「目前時間 + 90 秒」黃色標記；按 $1 可快轉 90 秒（單鍵 S 已停用）",
+    "description": "開關說明：+90 秒進度標記，使用自訂快捷鍵"
+  },
+  "optCommentTimecodeTitle": {
+    "message": "留言時間碼跳轉播放",
+    "description": "開關：留言時間碼跳轉播放"
+  },
+  "optCommentTimecodeDesc": {
+    "message": "點擊留言中的時間，回到播放器並從該時間開始播放",
+    "description": "開關說明：留言時間碼跳轉播放"
+  },
   "optCoverTitle": {
     "message": "封面圖修正",
     "description": "開關：封面圖修正"

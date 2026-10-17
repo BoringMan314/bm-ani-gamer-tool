@@ -44,8 +44,9 @@
 
 | 功能            | 說明                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------- |
-| **3X 倍速選項**   | 在 Video.js 播放器的倍速選單**最上方**加入 **3x**（外觀與站方內建項目一致），點選後將影片 `playbackRate` 設為 `3`。                    |
+| **3X 倍速選項**   | 在 Video.js 播放器的倍速選單**最上方**加入 **3x**（外觀與站方內建項目一致），並記住最近選擇的倍速；一般與無痕模式分開保存。關閉功能會清除記憶並還原為 1x。                    |
 | **+90 秒進度標記** | 在進度條上以黃色細線標示「**目前時間 + 90 秒**」的位置；按 `S` 或自訂快捷鍵（預設 `Ctrl+Shift+S`／macOS `Command+Shift+S`）可快轉 90 秒。 |
+| **留言時間碼跳轉播放** | 點擊其他使用者留言中的時間碼，會回到播放器，並從該時間開始播放。 |
 
 **版面修正**
 
@@ -112,7 +113,7 @@
 
 ## 技術概要
 
-- **彈出視窗** [`popup.html`](popup.html) / [`popup.js`](popup.js)：五個功能開關，變更寫入 `chrome.storage.local`。
+- **彈出視窗** [`popup.html`](popup.html) / [`popup.js`](popup.js)：六個功能開關，變更寫入 `chrome.storage.local`。
 - **彈出視窗配色** [`popup.css`](popup.css)：採動畫瘋站方深色版面底色（`#222526`、`#1B1D1E`）與巴哈姆特標誌三色 — 青 `#00B4D8`（主要強調色與開關開啟狀態）、橙 `#EF9B3F`、粉 `#EA7B94`（標題分隔線與分組色標）。
 - **共用預設值** [`src/defaults.js`](src/defaults.js)：開關鍵名與預設值的單一來源，內容腳本與彈出視窗共用。
 - **設定中樞** [`src/core.js`](src/core.js)：載入設定並監看 `storage.onChanged`，以 `bmAniTool.register({ key, setEnabled })` 通知各功能模組啟用／停用；單一模組拋錯不影響其他模組。
@@ -129,7 +130,7 @@
 | 路徑                                                                             | 說明                                           |
 | ------------------------------------------------------------------------------ | -------------------------------------------- |
 | [`manifest.json`](manifest.json)                                               | Manifest V3 設定：內容腳本、`action` 彈出視窗、背景服務、快捷鍵指令 |
-| [`popup.html`](popup.html) / [`popup.css`](popup.css) / [`popup.js`](popup.js) | 工具列圖示彈出視窗與五項功能開關                             |
+| [`popup.html`](popup.html) / [`popup.css`](popup.css) / [`popup.js`](popup.js) | 工具列圖示彈出視窗與六項功能開關                             |
 | [`background.js`](background.js)                                               | 快捷鍵指令轉送與快捷鍵狀態查詢                              |
 | [`content.css`](content.css)                                                   | 依功能開關套用的樣式覆寫                                 |
 | [`src/defaults.js`](src/defaults.js)                                           | 功能開關預設值與正規化                                  |
@@ -137,6 +138,7 @@
 | [`src/feature-speed-3x.js`](src/feature-speed-3x.js)                           | 3X 倍速：注入頁面脈絡腳本並傳遞開關狀態                        |
 | [`src/injected-speed-3x.js`](src/injected-speed-3x.js)                         | 3X 倍速：建立選單項目並設定播放速率（頁面脈絡）                    |
 | [`src/feature-time-indicator.js`](src/feature-time-indicator.js)               | +90 秒進度標記與快轉邏輯                               |
+| [`src/feature-comment-timecode.js`](src/feature-comment-timecode.js)           | 留言時間碼：點擊後跳回播放器並從指定時間播放             |
 | [`src/feature-cover-image.js`](src/feature-cover-image.js)                     | 封面圖取得、樣式注入與還原                                |
 | [`src/feature-theater-topbar.js`](src/feature-theater-topbar.js)               | 劇院模式偵測與頂部列顯示同步                               |
 | [`src/feature-adblock-prompt.js`](src/feature-adblock-prompt.js)               | 擋廣告提示隱藏與還原                                   |

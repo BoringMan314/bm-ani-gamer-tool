@@ -5,6 +5,7 @@
 		speed3x: true,
 		coverImage: true,
 		timeIndicator: false,
+		commentTimecode: true,
 		theaterTopbar: true,
 		hideAdblockPrompt: true,
 	};

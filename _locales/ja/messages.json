@@ -39,6 +39,22 @@
     "message": "進捗バーに「現在時刻 + 90秒」の黄色マーカーを表示。S キーで 90 秒早送り",
     "description": "トグル説明：+90秒マーカー"
   },
+  "optMarkerDescDefault": {
+    "message": "進捗バーに「現在時刻 + 90秒」の黄色マーカーを表示。S または $1 で 90 秒早送り",
+    "description": "トグル説明：+90秒マーカー、デフォルトのショートカット"
+  },
+  "optMarkerDescCustom": {
+    "message": "進捗バーに「現在時刻 + 90秒」の黄色マーカーを表示。$1 で 90 秒早送り（S キーは無効）",
+    "description": "トグル説明：+90秒マーカー、カスタムショートカット"
+  },
+  "optCommentTimecodeTitle": {
+    "message": "コメント時刻から再生",
+    "description": "トグル：コメント時刻から再生"
+  },
+  "optCommentTimecodeDesc": {
+    "message": "コメント内の時刻を押すと、プレーヤーへ移動してその時刻から再生",
+    "description": "トグル説明：コメント時刻から再生"
+  },
   "optCoverTitle": {
     "message": "カバー画像修正",
     "description": "トグル：カバー画像"

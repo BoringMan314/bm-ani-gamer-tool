@@ -39,6 +39,22 @@
     "message": "进度条显示“当前时间 + 90 秒”黄色标记，按 S 可快进 90 秒",
     "description": "开关说明：+90 秒进度标记"
   },
+  "optMarkerDescDefault": {
+    "message": "进度条显示“当前时间 + 90 秒”黄色标记；按 S 或 $1 可快进 90 秒",
+    "description": "开关说明：+90 秒进度标记，使用默认快捷键"
+  },
+  "optMarkerDescCustom": {
+    "message": "进度条显示“当前时间 + 90 秒”黄色标记；按 $1 可快进 90 秒（单键 S 已停用）",
+    "description": "开关说明：+90 秒进度标记，使用自定义快捷键"
+  },
+  "optCommentTimecodeTitle": {
+    "message": "留言时间码跳转播放",
+    "description": "开关：留言时间码跳转播放"
+  },
+  "optCommentTimecodeDesc": {
+    "message": "点击留言中的时间，回到播放器并从该时间开始播放",
+    "description": "开关说明：留言时间码跳转播放"
+  },
   "optCoverTitle": {
     "message": "封面图修正",
     "description": "开关：封面图修正"

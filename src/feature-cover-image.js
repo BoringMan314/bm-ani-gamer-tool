@@ -6,6 +6,9 @@
 	const STYLE_ID = 'bm-ani-gamer-cover-image-fix-style';
 	const TOUCH_ATTR = 'data-bm-ani-cover-touched';
 	const POSTER_ORIG_ATTR = 'data-bm-ani-cover-orig-poster';
+	const INJECTED_POSTER_ATTR = 'data-bm-ani-cover-image-fix-poster';
+	const INJECTED_EPISODE_ATTR = 'data-bm-ani-cover-image-fix-episode';
+	const PENDING_EPISODE_ATTR = 'data-bm-ani-cover-image-fix-pending-episode';
 	const POSTER_BASES = [
 		'#ani_video .vjs-poster',
 		'#ani_video picture.vjs-poster',
@@ -33,6 +36,17 @@
 	let deb = null;
 	let repumpId = 0;
 	let repump = 0;
+	let activeEpisodeKey = '';
+	let activeCoverUrl = '';
+	const staleEpisodeCoverUrls = new Set();
+	let awaitingEpisodeCover = false;
+	let pendingCoverCandidate = '';
+	let pendingCoverCandidateSince = 0;
+	const COVER_STABILITY_MS = 180;
+
+	function isRejectedCoverUrl(url, excludedUrl) {
+		return !url || url === excludedUrl || staleEpisodeCoverUrls.has(url);
+	}
 
 	function toAbs(s, base) {
 		const t = String(s || '').trim();
@@ -44,7 +58,29 @@
 		}
 	}
 
-	function readCoverFromDocument(doc, baseHref) {
+	function getEpisodeKeyFromUrl(href) {
+		try {
+			const url = new URL(href, document.baseURI);
+			if (url.hostname !== location.hostname) return '';
+			const sn = url.searchParams.get('sn');
+			if (!sn || !/animeVideo\.php/.test(url.pathname)) return '';
+			return `${url.pathname}?sn=${sn}`;
+		} catch (_) {
+			return '';
+		}
+	}
+
+	function getEpisodeKey() {
+		try {
+			const url = new URL(window.top.location.href);
+			return `${url.pathname}?sn=${url.searchParams.get('sn') || ''}`;
+		} catch (_) {
+			const url = new URL(location.href);
+			return `${url.pathname}?sn=${url.searchParams.get('sn') || ''}`;
+		}
+	}
+
+	function readCoverFromDocument(doc, baseHref, excludedUrl) {
 		if (!doc) return '';
 		const base = baseHref || doc.baseURI || document.baseURI;
 		const q = (sel) => doc.querySelector(sel);
@@ -52,11 +88,14 @@
 			const m = q(sel);
 			if (m && m.content) {
 				const r = toAbs(m.content, base);
-				if (r) return r;
+				if (!isRejectedCoverUrl(r, excludedUrl)) return r;
 			}
 		}
 		const link = q('link[rel="image_src"]');
-		if (link && link.href) return toAbs(link.href, base);
+		if (link && link.href) {
+			const r = toAbs(link.href, base);
+			if (!isRejectedCoverUrl(r, excludedUrl)) return r;
+		}
 		return '';
 	}
 
@@ -68,24 +107,27 @@
 		return v && v.tagName === 'VIDEO' ? v : null;
 	}
 
-	function getEpisodeSpecificCoverFromDocument(doc) {
+	function getEpisodeSpecificCoverFromDocument(doc, episodeKey, excludedUrl) {
 		if (!doc) return '';
 		const base = doc.baseURI || document.baseURI;
 		const v = getEpisodeVideoFromDocument(doc);
 		if (v) {
-			let p = (v.getAttribute(POSTER_ORIG_ATTR) || v.getAttribute('poster') || '').trim();
-			if (!p) p = (v.getAttribute('data-poster') || '').trim();
-			if (p) {
-				const h = toAbs(p, base);
-				if (h) return h;
+			const injectedPoster = toAbs(v.getAttribute(INJECTED_POSTER_ATTR), base);
+			const injectedEpisode = v.getAttribute(INJECTED_EPISODE_ATTR) || '';
+			const poster = toAbs(v.getAttribute('poster'), base);
+			if (!isRejectedCoverUrl(poster, excludedUrl)) {
+				if (poster !== injectedPoster || injectedEpisode === episodeKey) return poster;
 			}
+
+			const dataPoster = toAbs(v.getAttribute('data-poster'), base);
+			if (!isRejectedCoverUrl(dataPoster, excludedUrl)) return dataPoster;
 		}
 		const vc = doc.getElementById('video-container');
 		if (vc) {
 			const p = vc.getAttribute('data-video-poster');
 			if (p && p.trim()) {
 				const h = toAbs(p.trim(), base);
-				if (h) return h;
+				if (!isRejectedCoverUrl(h, excludedUrl)) return h;
 			}
 		}
 		return '';
@@ -100,19 +142,67 @@
 		}
 	}
 
-	function getCoverImageUrl() {
-		let u = getEpisodeSpecificCoverFromDocument(document);
-		if (u) return u;
-		u = readCoverFromDocument(document, document.baseURI);
+	function getCoverImageUrl(episodeKey, excludedUrl, allowPageMetadata) {
+		let u = getEpisodeSpecificCoverFromDocument(document, episodeKey, excludedUrl);
 		if (u) return u;
 		if (canReadTopDocument()) {
 			const td = window.top.document;
-			u = getEpisodeSpecificCoverFromDocument(td);
+			u = getEpisodeSpecificCoverFromDocument(td, episodeKey, excludedUrl);
 			if (u) return u;
-			u = readCoverFromDocument(td, td.baseURI);
+			if (!allowPageMetadata) return '';
+			u = readCoverFromDocument(document, document.baseURI, excludedUrl);
+			if (u) return u;
+			u = readCoverFromDocument(td, td.baseURI, excludedUrl);
+			if (u) return u;
+		} else {
+			if (!allowPageMetadata) return '';
+			u = readCoverFromDocument(document, document.baseURI, excludedUrl);
 			if (u) return u;
 		}
 		return '';
+	}
+
+	function getPendingEpisodeIntent() {
+		try {
+			const root = window.top.document.documentElement;
+			const raw = root.getAttribute(PENDING_EPISODE_ATTR) || '';
+			const split = raw.lastIndexOf('|');
+			if (split < 0) return null;
+			const key = raw.slice(0, split);
+			const expiresAt = Number(raw.slice(split + 1));
+			if (!key || !Number.isFinite(expiresAt) || Date.now() >= expiresAt) {
+				root.removeAttribute(PENDING_EPISODE_ATTR);
+				return null;
+			}
+			return { key, root };
+		} catch (_) {
+			return null;
+		}
+	}
+
+	function setPendingEpisodeIntent(episodeKey) {
+		try {
+			window.top.document.documentElement.setAttribute(
+				PENDING_EPISODE_ATTR,
+				`${episodeKey}|${Date.now() + 5000}`,
+			);
+		} catch (_) {}
+	}
+
+	function clearPendingEpisodeIntent() {
+		try {
+			window.top.document.documentElement.removeAttribute(PENDING_EPISODE_ATTR);
+		} catch (_) {}
+	}
+
+	function getCurrentEpisodeKey() {
+		const locationKey = getEpisodeKey();
+		const pending = getPendingEpisodeIntent();
+		if (pending && locationKey === pending.key) {
+			pending.root.removeAttribute(PENDING_EPISODE_ATTR);
+			return locationKey;
+		}
+		return (pending && pending.key) || locationKey;
 	}
 
 	function getPlayerHost() {
@@ -236,13 +326,21 @@
 		});
 	}
 
-	function setVideoPoster(url) {
+	function setVideoPoster(url, episodeKey) {
 		const v = getMainVideo();
 		if (!v) return;
 		if (!v.hasAttribute(POSTER_ORIG_ATTR)) {
 			v.setAttribute(POSTER_ORIG_ATTR, v.getAttribute('poster') || '');
+		} else {
+			const currentPoster = v.getAttribute('poster') || '';
+			const injectedPoster = v.getAttribute(INJECTED_POSTER_ATTR) || '';
+			if (currentPoster && currentPoster !== injectedPoster) {
+				v.setAttribute(POSTER_ORIG_ATTR, currentPoster);
+			}
 		}
 		if (v.getAttribute('poster') !== url) v.setAttribute('poster', url);
+		if (v.getAttribute(INJECTED_POSTER_ATTR) !== url) v.setAttribute(INJECTED_POSTER_ATTR, url);
+		if (v.getAttribute(INJECTED_EPISODE_ATTR) !== episodeKey) v.setAttribute(INJECTED_EPISODE_ATTR, episodeKey);
 	}
 
 	function restoreVideoPoster() {
@@ -251,6 +349,8 @@
 			if (orig) v.setAttribute('poster', orig);
 			else v.removeAttribute('poster');
 			v.removeAttribute(POSTER_ORIG_ATTR);
+			v.removeAttribute(INJECTED_POSTER_ATTR);
+			v.removeAttribute(INJECTED_EPISODE_ATTR);
 		});
 	}
 
@@ -265,20 +365,104 @@
 		}
 	}
 
+	function installWaitingStyle() {
+		let el = document.getElementById(STYLE_ID);
+		if (!el) {
+			el = document.createElement('style');
+			el.id = STYLE_ID;
+			(document.head || document.documentElement).appendChild(el);
+		}
+		el.textContent = `
+			#ani_video, #ani_video.video-js, #video-container video-js, #video-container .video-js,
+			.container-player video-js, .container-player .video-js, .videoframe video-js, .b-post video-js, .b-post .video-js {
+				background-color:#000 !important;
+				background-image:none !important;
+			}
+			#ani_video .vjs-poster, #ani_video picture.vjs-poster,
+			#video-container video-js .vjs-poster, #video-container video-js picture.vjs-poster,
+			.container-player video-js .vjs-poster, .container-player video-js picture.vjs-poster,
+			.videoframe video-js .vjs-poster, .videoframe video-js picture.vjs-poster,
+			.b-post video-js .vjs-poster, .b-post video-js picture.vjs-poster,
+			video-js .vjs-poster, video-js picture.vjs-poster {
+				display:none !important;
+			}
+			#ani_video video.vjs-tech, #ani_video .vjs-tech,
+			#video-container video-js video.vjs-tech, #video-container video-js .vjs-tech,
+			.container-player video-js .vjs-tech, .videoframe video-js .vjs-tech,
+			.b-post video-js .vjs-tech, video-js .vjs-tech {
+				opacity:0 !important;
+				visibility:hidden !important;
+			}
+			#ani_video .R18, #video-container video-js .R18, .container-player video-js .R18,
+			.videoframe video-js .R18, .b-post video-js .R18, video-js .R18 {
+				background-image:none !important;
+			}`;
+	}
+
+	function beginEpisodeTransition(episodeKey) {
+		if (!enabled || !episodeKey || episodeKey === activeEpisodeKey) return;
+		if (activeCoverUrl) staleEpisodeCoverUrls.add(activeCoverUrl);
+		if (pendingCoverCandidate) staleEpisodeCoverUrls.add(pendingCoverCandidate);
+		activeEpisodeKey = episodeKey;
+		activeCoverUrl = '';
+		awaitingEpisodeCover = true;
+		pendingCoverCandidate = '';
+		pendingCoverCandidateSince = 0;
+		installWaitingStyle();
+	}
+
 	function tick() {
 		if (!enabled) return;
 		if (!shouldApplyPage()) {
 			clearInjectedStyle();
+			clearPosterInline();
+			restoreVideoPoster();
+			activeEpisodeKey = '';
+			activeCoverUrl = '';
+			staleEpisodeCoverUrls.clear();
+			awaitingEpisodeCover = false;
+			pendingCoverCandidate = '';
+			pendingCoverCandidateSince = 0;
 			return;
 		}
-		const url = getCoverImageUrl();
+		const locationEpisodeKey = getEpisodeKey();
+		const episodeKey = getCurrentEpisodeKey();
+		const pending = getPendingEpisodeIntent();
+		if (pending && locationEpisodeKey !== pending.key) return;
+		if (activeEpisodeKey && episodeKey !== activeEpisodeKey) beginEpisodeTransition(episodeKey);
+		if (!activeEpisodeKey) activeEpisodeKey = episodeKey;
+		const url = getCoverImageUrl(episodeKey, '', !awaitingEpisodeCover);
 		if (!url) {
-			clearInjectedStyle();
+			pendingCoverCandidate = '';
+			pendingCoverCandidateSince = 0;
+			if (!activeCoverUrl && !awaitingEpisodeCover) {
+				clearInjectedStyle();
+				clearPosterInline();
+				restoreVideoPoster();
+			}
 			return;
 		}
+		if (awaitingEpisodeCover) {
+			if (pendingCoverCandidate !== url) {
+				pendingCoverCandidate = url;
+				pendingCoverCandidateSince = Date.now();
+				setTimeout(schedule, COVER_STABILITY_MS);
+				return;
+			}
+			const remaining = COVER_STABILITY_MS - (Date.now() - pendingCoverCandidateSince);
+			if (remaining > 0) {
+				setTimeout(schedule, remaining);
+				return;
+			}
+		}
+		activeCoverUrl = url;
+		awaitingEpisodeCover = false;
+		pendingCoverCandidate = '';
+		pendingCoverCandidateSince = 0;
+		staleEpisodeCoverUrls.clear();
 		installStyle(url);
 		applyPosterInline(url);
-		setVideoPoster(url);
+		setVideoPoster(url, episodeKey);
 		hookMainVideoForPosterSync();
 	}
 
@@ -311,6 +495,13 @@
 		clearInjectedStyle();
 		clearPosterInline();
 		restoreVideoPoster();
+		clearPendingEpisodeIntent();
+		activeEpisodeKey = '';
+		activeCoverUrl = '';
+		staleEpisodeCoverUrls.clear();
+		awaitingEpisodeCover = false;
+		pendingCoverCandidate = '';
+		pendingCoverCandidateSince = 0;
 	}
 
 	const ATTR_POSTER = ['data-video-poster', 'poster', 'data-poster'];
@@ -332,6 +523,17 @@
 	}
 	if (canReadTopDocument()) {
 		try {
+			const topRoot = window.top.document.documentElement;
+			new MutationObserver(() => {
+				const pending = getPendingEpisodeIntent();
+				if (pending) beginEpisodeTransition(pending.key);
+				else beginEpisodeTransition(getEpisodeKey());
+				schedule();
+			}).observe(topRoot, {
+				attributes: true,
+				attributeFilter: [PENDING_EPISODE_ATTR],
+			});
+
 			const vct = window.top.document.getElementById('video-container');
 			if (vct) {
 				new MutationObserver(schedule).observe(vct, {
@@ -352,12 +554,33 @@
 		});
 	}
 	window.addEventListener('pageshow', tick);
-	window.addEventListener('popstate', schedule, { passive: true });
+	window.addEventListener('popstate', () => {
+		if (!enabled) return;
+		clearPendingEpisodeIntent();
+		beginEpisodeTransition(getEpisodeKey());
+		schedule();
+	}, { passive: true });
+	document.addEventListener('click', (event) => {
+		if (!enabled) return;
+		const target = event.target;
+		const link = target && target.closest ? target.closest('a[href]') : null;
+		if (!link) return;
+		const targetEpisodeKey = getEpisodeKeyFromUrl(link.href);
+		if (!targetEpisodeKey) return;
+		setPendingEpisodeIntent(targetEpisodeKey);
+		beginEpisodeTransition(targetEpisodeKey);
+	}, true);
 	for (const k of ['pushState', 'replaceState']) {
 		const orig = history[k];
 		if (typeof orig !== 'function') continue;
 		history[k] = function () {
 			const ret = orig.apply(this, arguments);
+			if (enabled) {
+				const locationKey = getEpisodeKey();
+				const pending = getPendingEpisodeIntent();
+				if (pending && locationKey === pending.key) clearPendingEpisodeIntent();
+				beginEpisodeTransition(locationKey);
+			}
 			schedule();
 			return ret;
 		};

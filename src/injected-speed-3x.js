@@ -6,6 +6,7 @@
 
 	const EXTRA_RATE = 3;
 	const FLAG_ATTR = 'data-bm-ani-3x';
+	const RATE_ATTR = 'data-bm-ani-remembered-rate';
 	const ITEM_ATTR = 'data-bm-ani-3x-item';
 
 	function isEnabled() {
@@ -32,6 +33,18 @@
 			if (v) return v;
 		}
 		return document.querySelector('#video-container video');
+	}
+
+	function getRememberedRate() {
+		const rate = Number(document.documentElement.getAttribute(RATE_ATTR));
+		return Number.isFinite(rate) && rate > 0 && rate <= 16 ? rate : null;
+	}
+
+	function applyRememberedRate() {
+		if (!isEnabled()) return;
+		const rate = getRememberedRate();
+		const video = getMainVideo();
+		if (rate !== null && video && video.playbackRate !== rate) video.playbackRate = rate;
 	}
 
 	function getMenuContent() {
@@ -89,6 +102,7 @@
 			return;
 		}
 		ensureMenuItem();
+		applyRememberedRate();
 	}
 
 	setInterval(tick, 400);
@@ -96,7 +110,12 @@
 
 	new MutationObserver(tick).observe(document.documentElement, {
 		attributes: true,
-		attributeFilter: [FLAG_ATTR],
+		attributeFilter: [FLAG_ATTR, RATE_ATTR],
+	});
+
+	document.addEventListener('bmAni3xResetRate', function () {
+		const video = getMainVideo();
+		if (video) video.playbackRate = 1;
 	});
 
 	const root = document.getElementById('video-container');
