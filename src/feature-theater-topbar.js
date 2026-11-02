@@ -9,12 +9,29 @@
 	const OBS_FLAG = 'data-bm-tool-theater-obs';
 	const ENDED_STRIP_UNLOCK_FLAG = 'data-bm-tool-ended-unlock';
 	const FEATURE_CLASS = 'bm-tool-theater';
-	const TOP_REVEAL_PX = 110;
+	const TOP_REVEAL_PX = 100;
+	const TOP_HIDE_DELAY_MS = 1000;
 
 	let enabled = false;
 	let rafId = 0;
+	let hideTimeoutId = 0;
 	let mouseNearTop = false;
 	let pointerHooksAttached = false;
+
+	function cancelHideTimeout() {
+		if (!hideTimeoutId) return;
+		clearTimeout(hideTimeoutId);
+		hideTimeoutId = 0;
+	}
+
+	function scheduleHide() {
+		if (!mouseNearTop || hideTimeoutId) return;
+		hideTimeoutId = window.setTimeout(() => {
+			hideTimeoutId = 0;
+			mouseNearTop = false;
+			sync();
+		}, TOP_HIDE_DELAY_MS);
+	}
 
 	function isTheaterMode() {
 		const vf = document.querySelector('.videoframe');
@@ -82,15 +99,18 @@
 		syncEndedFullwindowUnlock(topSky, video);
 
 		if (!enabled) {
+			cancelHideTimeout();
 			mouseNearTop = false;
 			if (topSky) topSky.classList.remove(REVEAL_CLASS);
 			return;
 		}
 
 		if (video && !video.paused && !video.ended) {
+			cancelHideTimeout();
 			mouseNearTop = false;
 		}
 		if (!topSky || !isTheaterMode() || !topSky.classList.contains('fullwindow')) {
+			cancelHideTimeout();
 			mouseNearTop = false;
 		}
 
@@ -109,16 +129,19 @@
 		if (!video || video.ended || !video.paused) return;
 
 		const near = e.clientY <= TOP_REVEAL_PX;
-		if (near !== mouseNearTop) {
-			mouseNearTop = near;
-			sync();
+		if (near) {
+			cancelHideTimeout();
+			if (!mouseNearTop) {
+				mouseNearTop = true;
+				sync();
+			}
+		} else if (mouseNearTop) {
+			scheduleHide();
 		}
 	}
 
 	function onDocumentMouseLeave() {
-		if (!mouseNearTop) return;
-		mouseNearTop = false;
-		sync();
+		scheduleHide();
 	}
 
 	function attachPointerListeners() {
