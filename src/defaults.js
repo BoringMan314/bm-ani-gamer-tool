@@ -3,6 +3,7 @@
 
 	const DEFAULTS = {
 		speed3x: true,
+		volumeStep5: true,
 		coverImage: true,
 		timeIndicator: false,
 		commentTimecode: true,

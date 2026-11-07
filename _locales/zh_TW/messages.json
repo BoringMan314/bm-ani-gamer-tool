@@ -31,6 +31,14 @@
     "message": "在播放器倍速選單最上方加入 3x",
     "description": "開關說明：3X 倍速"
   },
+  "optVolumeStep5Title": {
+    "message": "音量 5% 刻度",
+    "description": "開關：上下鍵音量吸附至 5% 刻度"
+  },
+  "optVolumeStep5Desc": {
+    "message": "保留播放器原生提示；按 ↑／↓ 時吸附至方向上的下一個 5% 刻度（例：52% 按 ↑ 變 55%）",
+    "description": "開關說明：上下鍵音量吸附至 5% 刻度"
+  },
   "optMarkerTitle": {
     "message": "+90 秒進度標記",
     "description": "開關：+90 秒進度標記"

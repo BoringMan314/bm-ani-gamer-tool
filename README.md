@@ -6,11 +6,11 @@
 [![GitHub all releases](https://img.shields.io/github/downloads/BoringMan314/bm-ani-gamer-tool/total)](https://github.com/BoringMan314/bm-ani-gamer-tool/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-適用於 [巴哈姆特動畫瘋](https://ani.gamer.com.tw)（`ani.gamer.com.tw`）的瀏覽器擴充功能：將 **3X 倍速**、**+90 秒進度標記**、**封面圖修正**、**劇院模式頂部列修正** 與 **隱藏擋廣告提示** 多項功能整合為單一擴充，並可在彈出視窗中**逐項開關**。
+適用於 [巴哈姆特動畫瘋](https://ani.gamer.com.tw)（`ani.gamer.com.tw`）的瀏覽器擴充功能：將 **3X 倍速**、**音量 5% 刻度**、**+90 秒進度標記**、**封面圖修正**、**劇院模式頂部列修正** 與 **隱藏擋廣告提示** 多項功能整合為單一擴充，並可在彈出視窗中**逐項開關**。
 
-*将 3X 倍速、+90 秒进度标记、封面图修正、剧院模式顶部栏修正与隐藏挡广告提示整合为单一扩展，可逐项开关。*<br>
-*3倍速・+90秒マーカー・カバー画像修正・シアターモード上部バー修正・広告ブロック警告の非表示を 1 つの拡張機能に統合し、個別にオン／オフできます。*<br>
-*Combines 3× speed, +90s marker, cover image fix, theater top bar fix, and ad-block notice hiding into one extension with per-feature toggles.*
+*将 3X 倍速、音量 5% 刻度、+90 秒进度标记、封面图修正、剧院模式顶部栏修正与隐藏挡广告提示整合为单一扩展，可逐项开关。*<br>
+*3倍速・音量 5% 刻み・+90秒マーカー・カバー画像修正・シアターモード上部バー修正・広告ブロック警告の非表示を 1 つの拡張機能に統合し、個別にオン／オフできます。*<br>
+*Combines 3× speed, 5% volume steps, +90s marker, cover image fix, theater top bar fix, and ad-block notice hiding into one extension with per-feature toggles.*
 
 > **聲明**：本專案為第三方輔助工具，與動畫瘋／巴哈姆特官方無關。使用請遵守該站服務條款與著作權規範。
 
@@ -45,6 +45,7 @@
 | 功能            | 說明                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------- |
 | **3X 倍速選項**   | 在 Video.js 播放器的倍速選單**最上方**加入 **3x**（外觀與站方內建項目一致），並記住最近選擇的倍速；一般與無痕模式分開保存。關閉功能會清除記憶並還原為 1x。                    |
+| **音量 5% 刻度** | 保留播放器原生快捷鍵與提示；按 `↑`／`↓` 時往對應方向吸附至下一個 5% 刻度（例如 52% 按 `↑` 到 55%）。                                           |
 | **+90 秒進度標記** | 在進度條上以黃色細線標示「**目前時間 + 90 秒**」的位置；按 `S` 或自訂快捷鍵（預設 `Ctrl+Shift+S`／macOS `Command+Shift+S`）可快轉 90 秒。 |
 | **留言時間碼跳轉播放** | 點擊其他使用者留言中的時間碼，會回到播放器，並從該時間開始播放。 |
 
@@ -64,6 +65,7 @@
 
 - `S`**（單鍵）**：固定快捷鍵；當使用者在瀏覽器將 `skip90` 指令改為**非預設**組合時會自動停用，避免衝突。
 - `Ctrl+Shift+S`：可在 `chrome://extensions/shortcuts` 自訂；彈出視窗底部的「**設定快轉快捷鍵**」按鈕可直接開啟該頁。
+- 播放器聚焦時按 `↑`／`↓`：音量每次往對應方向調整至下一個 5% 刻度。
 
 ### 整合來源
 
@@ -102,6 +104,7 @@
 1. 修改 [`src/`](src/) 內的功能模組、[`content.css`](content.css) 或 `popup.*` 後，在 `chrome://extensions` 將本擴充**重新載入**。
 2. 重新整理動畫瘋分頁，逐項驗證：
   - **3x**：倍速選單最上方出現 `3x`，點選後影片明顯加速。
+  - **音量 5% 刻度**：播放器聚焦時按 `↑`／`↓`，音量每次移動一個 5% 刻度。
   - **+90 秒標記**：進度條出現黃色細線；按 `S` 可快轉。
   - **封面圖**：開播前顯示封面而非純黑。
   - **劇院頂部列**：按 `T` 進入劇院模式，暫停或播畢後頂部列可再次顯示。
@@ -113,14 +116,14 @@
 
 ## 技術概要
 
-- **彈出視窗** [`popup.html`](popup.html) / [`popup.js`](popup.js)：六個功能開關，變更寫入 `chrome.storage.local`。
+- **彈出視窗** [`popup.html`](popup.html) / [`popup.js`](popup.js)：七個功能開關，變更寫入 `chrome.storage.local`。
 - **彈出視窗配色** [`popup.css`](popup.css)：採動畫瘋站方深色版面底色（`#222526`、`#1B1D1E`）與巴哈姆特標誌三色 — 青 `#00B4D8`（主要強調色與開關開啟狀態）、橙 `#EF9B3F`、粉 `#EA7B94`（標題分隔線與分組色標）。
 - **共用預設值** [`src/defaults.js`](src/defaults.js)：開關鍵名與預設值的單一來源，內容腳本與彈出視窗共用。
 - **設定中樞** [`src/core.js`](src/core.js)：載入設定並監看 `storage.onChanged`，以 `bmAniTool.register({ key, setEnabled })` 通知各功能模組啟用／停用；單一模組拋錯不影響其他模組。
 - **功能模組** `src/feature-*.js`：各自處理啟用與還原邏輯，並以 `MutationObserver` 因應站方 DOM 變化。
 - **頁面脈絡腳本** [`src/injected-speed-3x.js`](src/injected-speed-3x.js)：倍速選單需在網頁原生 JS 環境操作 Video.js 選單 DOM，故由內容腳本注入；開關狀態透過 `<html>` 的 `data-bm-ani-3x` 屬性傳遞（兩個世界共用同一份 DOM）。
 - **背景服務** [`background.js`](background.js)：處理 `skip90` 快捷鍵指令，並回報使用者是否已自訂快捷鍵（供內容腳本決定是否停用固定單鍵 `S`）。
-- **樣式覆寫** [`content.css`](content.css)：僅在 `<html>` 帶有對應功能 class（`ag-feature-theater`、`ag-feature-hide-adblock`）時生效。
+- **樣式覆寫** [`content.css`](content.css)：僅在 `<html>` 帶有對應功能 class（`bm-tool-theater`、`bm-tool-hide-adblock`）時生效。
 - **框架範圍**：內容腳本以 `all_frames: true` 載入；需要站方版面元素的功能（劇院頂部列、擋廣告提示）在模組內限定僅於最上層框架執行。
 
 ---
@@ -130,13 +133,14 @@
 | 路徑                                                                             | 說明                                           |
 | ------------------------------------------------------------------------------ | -------------------------------------------- |
 | [`manifest.json`](manifest.json)                                               | Manifest V3 設定：內容腳本、`action` 彈出視窗、背景服務、快捷鍵指令 |
-| [`popup.html`](popup.html) / [`popup.css`](popup.css) / [`popup.js`](popup.js) | 工具列圖示彈出視窗與六項功能開關                             |
+| [`popup.html`](popup.html) / [`popup.css`](popup.css) / [`popup.js`](popup.js) | 工具列圖示彈出視窗與七項功能開關                             |
 | [`background.js`](background.js)                                               | 快捷鍵指令轉送與快捷鍵狀態查詢                              |
 | [`content.css`](content.css)                                                   | 依功能開關套用的樣式覆寫                                 |
 | [`src/defaults.js`](src/defaults.js)                                           | 功能開關預設值與正規化                                  |
 | [`src/core.js`](src/core.js)                                                   | 設定載入、變更監看與功能模組註冊                             |
 | [`src/feature-speed-3x.js`](src/feature-speed-3x.js)                           | 3X 倍速：注入頁面脈絡腳本並傳遞開關狀態                        |
 | [`src/injected-speed-3x.js`](src/injected-speed-3x.js)                         | 3X 倍速：建立選單項目並設定播放速率（頁面脈絡）                    |
+| [`src/feature-volume-step5.js`](src/feature-volume-step5.js) / [`src/injected-volume-step5.js`](src/injected-volume-step5.js) | 依上下鍵方向將原生音量變更吸附至下一個 5% 刻度，保留原本按鍵與提示流程 |
 | [`src/feature-time-indicator.js`](src/feature-time-indicator.js)               | +90 秒進度標記與快轉邏輯                               |
 | [`src/feature-comment-timecode.js`](src/feature-comment-timecode.js)           | 留言時間碼：點擊後跳回播放器並從指定時間播放             |
 | [`src/feature-cover-image.js`](src/feature-cover-image.js)                     | 封面圖取得、樣式注入與還原                                |

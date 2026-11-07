@@ -31,6 +31,14 @@
     "message": "Add 3x to the top of the playback speed menu",
     "description": "Toggle help: 3× speed"
   },
+  "optVolumeStep5Title": {
+    "message": "5% volume steps",
+    "description": "Toggle: snap arrow-key volume to 5% steps"
+  },
+  "optVolumeStep5Desc": {
+    "message": "Move to the next 5% volume step with each default ↑/↓ shortcut press",
+    "description": "Toggle help: snap arrow-key volume to 5% steps"
+  },
   "optMarkerTitle": {
     "message": "+90s progress marker",
     "description": "Toggle: +90s marker"

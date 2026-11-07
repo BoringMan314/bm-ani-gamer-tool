@@ -31,6 +31,14 @@
     "message": "再生速度メニューの先頭に 3x を追加",
     "description": "トグル説明：3倍速"
   },
+  "optVolumeStep5Title": {
+    "message": "音量 5% 刻み",
+    "description": "トグル：矢印キーの音量を 5% 刻みに調整"
+  },
+  "optVolumeStep5Desc": {
+    "message": "プレーヤー既定の ↑／↓ ショートカットを押すたび、音量を次の 5% 刻みに調整",
+    "description": "トグル説明：矢印キーの音量を 5% 刻みに調整"
+  },
   "optMarkerTitle": {
     "message": "+90秒 マーカー",
     "description": "トグル：+90秒マーカー"
